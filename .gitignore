@@ -1,0 +1,13 @@
+.cache
+.cmake
+.conda
+
+.bash_history
+.bashrc
+.python_history
+
+docker_run.sh
+docker_start.sh
+
+test/models/*
+
