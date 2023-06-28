@@ -18,6 +18,18 @@ class SemanticSegmentation(object):
 
         print("NN: Start processing")
 
+    def get_predictions(self, data_sample):
+        pixel_data = data_sample.pred_sem_seg
+        predictions = pixel_data.values()[0].cpu().numpy()
+        return predictions[0]
+
+    def infer(self, image: np.ndarray) -> None:
+        segmentation_result = inference_model(self.model, image)
+
+        semantic_image = self.get_predictions(segmentation_result)
+        semantic_image = semantic_image.astype(np.uint8)
+
+        print("Success!")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -33,7 +45,20 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help='Path to weights')
+
+    parser.add_argument('--image',
+                        dest='image',
+                        type=str,
+                        required=True,
+                        help='Path to test image')
+
+    parser.add_argument('--output_dir',
+                        dest='output_dir',
+                        type=str,
+                        required=False,
+                        help='Path to output folder')
     
     options = parser.parse_args()
 
-    seg = SemanticSegmentation(options)
+    semantic_segmentation = SemanticSegmentation(options)
+    semantic_segmentation.infer(options.image)
