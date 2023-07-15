@@ -1,6 +1,6 @@
 docker image build \
     -t \
-    vins:main \
+    semantic_segmentation:latest \
     --build-arg \
     USER_ID=$(id -u) \
     --build-arg \
